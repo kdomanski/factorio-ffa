@@ -44,21 +44,14 @@ function kill_aliens_at_chunk(chunk)
 end
 
 function is_point_within_chunk(point, chunk)
-	local x = point[1]
-	local y = point[2]
+	local x = point.x
+	local y = point.y
 
---	print(chunk)
+	local x1 = chunk.area.left_top.x
+	local x2 = chunk.area.right_bottom.x
 
---	for a, b in ipairs(chunk) do
---		print(a)
---		print(b)
---	end
-
-	local x1 = chunk.area.left_top[1]
-	local x2 = chunk.area.right_bottom[1]
-
-	local y1 = chunk.area.left_top[2]
-	local y2 = chunk.area.right_bottom[2]
+	local y1 = chunk.area.left_top.y
+	local y2 = chunk.area.right_bottom.y
 
 	if x1 > x2 then x1, x2 = x2, x1 end
 	if y1 > y2 then y1, y2 = y2, y1 end
@@ -101,10 +94,8 @@ function teleport_force(faction)
 	local pos = get_random_position()
 	
 	for name, player in ipairs(faction.players) do
-		print(" * * * Attempting to teleport player " .. name)
 		success = player.teleport(pos)
 		if false == success then
-			print(" * * * Teleporting " .. player.name .. " failed")
 			return false
 		end
 
