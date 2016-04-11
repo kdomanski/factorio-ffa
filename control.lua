@@ -116,6 +116,24 @@ function teleport_force_until_success(force)
 	end
 end
 
+function chunk_contains_spawn_locations(chunk)
+	local locations = {}
+
+	for name, force in pairs(game.forces) do
+		if name == "enemy" then goto continue4298 end
+
+		local spawn = force.get_spawn_position(game.get_surface(1))
+
+		if is_point_within_chunk(spawn, chunk) then
+			locations[name] = force
+		end
+
+		::continue4298::
+	end
+
+	return locations
+end
+
 script.on_event(defines.events.on_player_created, function(event)
 	local thePlayer = game.players[event.player_index]
 	local name = thePlayer.name
@@ -140,4 +158,17 @@ script.on_event(defines.events.on_chunk_generated, function(chunk)
 
 		::continue6123::
         end
+
+	local forces = chunk_contains_spawn_locations(chunk)
+	for name, force in pairs(forces) do
+		if name == "enemy" then break end
+
+		local spawn = force.get_spawn_position(game.get_surface(1))
+		local tile = game.get_surface(1).get_tile(spawn.x, spawn.y)
+
+		if tile.collides_with("water-tile") then
+			print("Ooops... " .. name .. " landed in water. Randomizing again...")
+			teleport_force_until_success(force)
+		end
+	end
 end)
