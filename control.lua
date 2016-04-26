@@ -8,6 +8,12 @@ local TELEPORT_DISTANCE = 1000.0
 
 local rand_is_initialized = false
 
+function message_all_players(msg)
+	for name, player in pairs(game.players) do
+		player.print(msg)
+	end
+end
+
 function get_random_position(radius)
 	if false == rand_is_initialized then
                 math.randomseed(game.tick)
@@ -137,6 +143,9 @@ end
 script.on_event(defines.events.on_player_created, function(event)
 	local thePlayer = game.players[event.player_index]
 	local name = thePlayer.name
+
+	message_all_players("Player '" .. thePlayer.name .. "' is in force '" .. name .. "'.")
+
 	local f = game.forces[name]
 	if f == nil then
 		f = game.create_force(name)
