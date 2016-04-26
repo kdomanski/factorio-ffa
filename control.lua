@@ -97,6 +97,11 @@ function distance_to_chunk(chunk, position)
 	return math.sqrt((dist1*dist1) + (dist2*dist2))
 end
 
+function teleport_player_to_spawn(player)
+	local spawn = player.force.get_spawn_position(game.get_surface(1))
+	return player.teleport(spawn)
+end
+
 function teleport_force(faction)
 	local pos = get_random_position()
 	
@@ -158,6 +163,9 @@ script.on_event(defines.events.on_player_created, function(event)
 		f = game.create_force(name)
 		thePlayer.force = f
 		teleport_force_until_success(f)
+	else
+		thePlayer.force = f
+		teleport_player_to_spawn(thePlayer)
 	end
 end)
 
