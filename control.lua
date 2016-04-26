@@ -2,6 +2,7 @@ require "util"
 require "defines"
 
 require "math"
+require "string"
 
 local KILL_ALIENS_RANGE = 200
 local TELEPORT_DISTANCE = 1000.0
@@ -142,7 +143,13 @@ end
 
 script.on_event(defines.events.on_player_created, function(event)
 	local thePlayer = game.players[event.player_index]
-	local name = thePlayer.name
+	local underscoreMatch = thePlayer.name:find("_")
+	local name
+	if underscoreMatch == nil then
+		name = thePlayer.name
+	else
+		name = thePlayer.name:sub(0, underscoreMatch-1)
+	end
 
 	message_all_players("Player '" .. thePlayer.name .. "' is in force '" .. name .. "'.")
 
