@@ -4,8 +4,8 @@ require "defines"
 require "math"
 require "string"
 
-local KILL_ALIENS_RANGE = 200
-local TELEPORT_DISTANCE = 1000.0
+local KILL_ALIENS_RANGE = 400
+local TELEPORT_DISTANCE = 600.0
 
 local rand_is_initialized = false
 
